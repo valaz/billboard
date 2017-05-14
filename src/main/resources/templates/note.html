@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="${note.name}">Billboard</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" th:href="@{/image/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div th:replace="fragments/navbar :: header"/>
+
+<div class="container">
+
+
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-body">
+                        <h2 class="media-heading" th:text="${note.name}">Media heading</h2>
+                        <h4 th:text="${note.description}"></h4>
+                        <h4 th:text="${note.date}"></h4>
+                        <p style="text-align:center;">
+                            <img th:src="${note.imageUrl}"
+                                 style="height: 500px; width: 500px; overflow: hidden; object-fit: cover"/>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+<script type="text/javascript"
+        src="/webjars/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

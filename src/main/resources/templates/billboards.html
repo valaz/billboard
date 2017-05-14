@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="#{ui.billboards}">Billboard</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" th:href="@{/image/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/billboard.css}"/>
+</head>
+<body>
+<div th:replace="fragments/navbar :: header"/>
+
+<div class="container">
+
+    <div>
+        <div class="page-header">
+            <h1 th:text="#{ui.billboards}">Example page header</h1>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div th:each="billboard : ${billboards}">
+            <div class="col-md-3 lib-item clickable" th:href="${'/billboards/' + billboard.id}" data-category="view">
+                <div class="lib-panel">
+                    <div class="row box-shadow">
+                        <div class="col-md-6">
+                            <img class="lib-img-show" src="http://lorempixel.com/850/850/?random=1"
+                                 th:src="${'http://lorempixel.com/850/850/?random=' + billboard.logoUrl}"/>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="lib-row lib-header" th:inline="text">
+                                [[${billboard.name}]]
+                                <div class="lib-header-seperator"></div>
+                            </div>
+                            <div class="lib-row lib-desc" th:text="${billboard.description}">
+                                Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum
+                                dolor Lorem ipsum dolor
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+<script type="text/javascript"
+        src="/webjars/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"/>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="icon" type="image/png" th:href="@{/image/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <title>404: Page Not Found</title>
+    <style>
+        body {  background-color: #2a2627;}
+        h1, p { color: #ffffff; }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/navbar :: header"/>
+<div class="container">
+<h1>Page Not Found</h1>
+<p th:text="${error}">Error Info</p>
+</div>
+<script type="text/javascript"
+        src="/webjars/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
