@@ -3,23 +3,23 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymleaf.org">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link rel="stylesheet" type="text/css"
-          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="icon" type="image/png" th:href="@{/image/logo.png}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/error.css}"/>
     <title>500: Internal Server Error</title>
-    <style>
-        body {  background-color: #2a2627;}
-        h1, p { color: #ffffff; }
-    </style>
 </head>
 <body>
 <div th:replace="fragments/navbar :: header"/>
 <div class="container">
-<h1>Internal Server Error</h1>
-<p th:text="${error}">Error Info</p>
+    <div class="page-header">
+        <h1>Произошла ошибка на сервере</h1>
+    </div>
+    <p th:text="${error}">Error Info</p>
 </div>
 <script type="text/javascript"
         src="/webjars/jquery/2.2.1/jquery.min.js"></script>

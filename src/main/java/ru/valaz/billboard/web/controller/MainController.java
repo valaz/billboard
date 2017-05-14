@@ -1,13 +1,13 @@
 package ru.valaz.billboard.web.controller;
 
-import ru.valaz.billboard.domain.Billboard;
-import ru.valaz.billboard.domain.Note;
-import ru.valaz.billboard.services.repositories.BillboardRepository;
-import ru.valaz.billboard.services.repositories.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.valaz.billboard.domain.Billboard;
+import ru.valaz.billboard.domain.Note;
+import ru.valaz.billboard.services.repositories.BillboardRepository;
+import ru.valaz.billboard.services.repositories.NoteRepository;
 
 import java.util.Map;
 
@@ -31,7 +31,7 @@ public class MainController {
         return "billboards";
     }
 
-    @RequestMapping("/billboards/{id}")
+    @RequestMapping("/billboard/show/{id}")
     public String getBillboard(Map<String, Object> model, @PathVariable(value = "id") Long id) {
         Billboard billboard = billboardRepository.findOne(id);
         model.put("billboard", billboard);

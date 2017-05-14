@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Title</title>
@@ -8,20 +8,38 @@
 <nav class="navbar navbar-inverse" th:fragment="header">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/">
-                <img th:src="@{/image/logo.png}" src="/static/image/logo.png"/>
+                <img th:src="@{/images/logo.png}" src="/static/images/logo.png"/>
             </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li th:classappend="${#httpServletRequest.getRequestURI().startsWith('/billboard') ? 'active':''}">
                     <a href="/billboards" th:text="#{ui.billboards}">Billboards</a>
+                </li>
+                <li><a href="#" sec:authorize="hasAuthority('ADMIN')">ADMIN</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" sec:authorize="${!isAuthenticated()}">
+                <li><a href="#" th:href="@{/login}">Войти</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" sec:authorize="${isAuthenticated()}">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false"><span class="glyphicon glyphicon-user"/> <span
+                            sec:authentication="name"></span> <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/user/billboards">Мои доски</a></li>
+                        <li><a href="/user/notes">Мои записи</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/logout">Выйти</a></li>
+                    </ul>
                 </li>
             </ul>
         </div>

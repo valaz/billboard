@@ -1,11 +1,9 @@
 package ru.valaz.billboard.services.repositories;
 
-import ru.valaz.billboard.domain.User;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
+import ru.valaz.billboard.domain.User;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-    List<User> findByName(String name);
+    User findByUsername(String username);
 }

@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableAutoConfiguration
-@EntityScan(basePackages = {"com.bdb.billboard.domain"})
-@EnableJpaRepositories(basePackages = {"com.bdb.billboard.services.repositories"})
+@EntityScan(basePackages = {"ru.valaz.billboard.domain"})
+@EnableJpaRepositories(basePackages = {"ru.valaz.billboard.services.repositories"})
 @EnableTransactionManagement
 public class RepositoryConfiguration {
 }

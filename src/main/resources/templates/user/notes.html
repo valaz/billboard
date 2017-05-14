@@ -3,39 +3,28 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title th:text="${billboard.name}">Billboard</title>
+    <title th:text="#{ui.user.notes}">Billboard</title>
 
     <link rel="stylesheet" type="text/css"
           href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/billboard.css}"/>
 </head>
 <body>
 <div th:replace="fragments/navbar :: header"/>
 
 <div class="container">
-    <div class="col-md-12">
-        <div class="panel panel-default clickable" th:href="${'/billboards/' + billboard.id}">
-            <div class="panel-body">
-                <div class="media">
-                    <div class="media-left media-heading">
-                        <img class="media-object" src="..." alt="..." th:src="${billboard.logoUrl}"
-                             style="height: 64px;width: 64px; overflow: hidden; object-fit: cover"/>
-                    </div>
-                    <div class="media-body">
-                        <h2 class="media-heading" th:inline="text">
-                            [[${billboard.name}]]
-                            <span class="badge" th:text="${billboard.notes.size()}">4</span>
-                        </h2>
-                        <h5 th:text="${billboard.description}"></h5>
-                    </div>
-                </div>
-            </div>
+
+    <div>
+        <div class="page-header">
+            <h1 th:text="#{ui.user.notes}">Example page header</h1>
         </div>
+
     </div>
 
     <div class="row">
-        <div th:each="note : ${billboard.notes}">
+        <div th:each="note : ${notes}">
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail random-color">
                     <img src="..." alt="..." th:src="${note.imageUrl}"
@@ -52,7 +41,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <!-- /.container -->
 <script type="text/javascript"
