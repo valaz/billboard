@@ -1,6 +1,9 @@
 package ru.valaz.billboard.domain;
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,11 +19,11 @@ public class Billboard {
     private String description;
 
 
-    @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Note> notes;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public User getUser() {

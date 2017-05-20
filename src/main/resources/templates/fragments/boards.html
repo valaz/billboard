@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="row" th:fragment="grid">
+    <div th:each="billboard : ${billboards}">
+        <div class="col-md-4 col-sm-6 col-xs-6">
+            <div class="panel panel-default">
+                <div class="panel-thumbnail">
+                    <img src="//placehold.it/450X300/DD3333/EE3333" class="img-responsive"/>
+                </div>
+                <div class="panel-body">
+                    <p class="lead" th:text="${billboard.name}">Hacker News</p>
+                    <p th:text="${billboard.description}">description</p>
+                    <p>
+                        Followers <span class="label label-primary" th:text="${billboard.notes.size()*2}"></span>
+                        , Notes <span class="label label-info" th:text="${billboard.notes.size()}"></span>
+                    </p>
+                    <p>
+                        <img src="http://api.randomuser.me/portraits/med/men/20.jpg" width="28px"
+                             height="28px"/>
+                        <img src="http://api.randomuser.me/portraits/med/men/21.jpg" width="28px"
+                             height="28px"/>
+                        <img src="http://api.randomuser.me/portraits/med/men/14.jpg" width="28px"
+                             height="28px"/>
+                    </p>
+                    <div class="row">
+                        <form class="btn-form col-md-6 col-sm-12 col-xs-12" method="get"
+                              th:action="${'/billboard/show/' + billboard.id}">
+                            <button class="btn btn-success center-block col-md-12 col-xs-12" th:text="#{ui.view}"
+                                    type="submit">View
+                            </button>
+                        </form>
+                        <form class="btn-form col-md-6 col-sm-12 col-xs-12" method="post"
+                              th:if="${#httpServletRequest.getRequestURI().startsWith('/user/billboards')}"
+                              th:action="${'/user/billboard/delete/' + billboard.id}">
+                            <button class="btn btn-danger center-block col-md-12 col-xs-12" href="#"
+                                    th:text="#{ui.delete}" type="submit">Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div><!--/col-->
+    </div>
+</div>
+
+</body>
+</html>

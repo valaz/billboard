@@ -15,11 +15,9 @@ public class Note {
     private LocalDateTime date;
 
     @ManyToOne
-    @JoinColumn(name = "billboard_id", nullable = false)
     private Billboard billboard;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public User getUser() {

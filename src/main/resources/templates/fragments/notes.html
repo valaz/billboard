@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="row" th:fragment="grid">
+    <div class="row">
+        <div th:each="note : ${notes}">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail random-color">
+                    <img src="..." alt="..." th:src="${note.imageUrl}"
+                         style="height: 300px;width: 300px; overflow: hidden; object-fit: cover"/>
+                    <div class="caption">
+                        <h3 th:text="${note.name}">Thumbnail label</h3>
+                        <p th:text="${note.description}">...</p>
+                        <div class="row">
+                            <form class="btn-form col-md-6 col-sm-12 col-xs-12" method="get"
+                                  th:action="${'/note/show/' + note.id}">
+                                <button class="btn btn-success center-block col-md-12 col-xs-12" th:text="#{ui.view}"
+                                        type="submit">View
+                                </button>
+                            </form>
+                            <form class="btn-form col-md-6 col-sm-12 col-xs-12" method="post"
+                                  th:if="${#httpServletRequest.getRequestURI().startsWith('/user/notes')}"
+                                  th:action="${'/user/note/delete/' + note.id}">
+                                <button class="btn btn-danger center-block col-md-12 col-xs-12" href="#"
+                                        th:text="#{ui.delete}" type="submit">Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

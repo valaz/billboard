@@ -82,8 +82,8 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
     }
 
     private void assignUsersToAdminRole() {
-        List<Role> roles = (List<Role>) roleService.listAll();
-        List<User> users = (List<User>) userService.listAll();
+        List<Role> roles = roleService.listAll();
+        List<User> users = userService.listAll();
 
         roles.forEach(role -> {
             if (role.getRole().equalsIgnoreCase("ADMIN")) {

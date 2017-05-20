@@ -34,6 +34,14 @@
         </div>
     </div>
 
+    <form class="form-group col-md-12 col-sm-12 col-xs-12" method="post"
+          th:if="${note.user.username.equals(#authentication.name)}"
+          th:action="${'/user/note/delete/' + note.id}">
+        <button class="btn btn-danger center-block col-md-12 col-xs-12" href="#" th:text="#{ui.delete}" type="submit">
+            Delete
+        </button>
+    </form>
+
 </div>
 <!-- /.container -->
 <script type="text/javascript"

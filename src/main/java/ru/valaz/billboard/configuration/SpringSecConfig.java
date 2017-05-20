@@ -17,12 +17,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 public class SpringSecConfig extends WebSecurityConfigurerAdapter {
 
-    private AuthenticationProvider authenticationProvider;
-
     @Autowired
-    @Qualifier("daoAuthenticationProvider")
-    public void setAuthenticationProvider(AuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
+    public void setAuthenticationProvider(@Qualifier("daoAuthenticationProvider") AuthenticationProvider authenticationProvider,
+                                          AuthenticationManagerBuilder authenticationManagerBuilder) {
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
     }
 
     @Bean
@@ -42,15 +40,10 @@ public class SpringSecConfig extends WebSecurityConfigurerAdapter {
         return daoAuthenticationProvider;
     }
 
-    @Autowired
-    public void configureAuthManager(AuthenticationManagerBuilder authenticationManagerBuilder) {
-        authenticationManagerBuilder.authenticationProvider(authenticationProvider);
-    }
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeRequests().antMatchers("/", "/billboards", "/billboard/show/*", "/console/**").permitAll()
+                .authorizeRequests().antMatchers("/", "/billboards", "/billboard/show/*", "/note/show/*", "/console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()
