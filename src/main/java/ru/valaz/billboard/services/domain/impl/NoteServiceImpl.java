@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.valaz.billboard.domain.Note;
 import ru.valaz.billboard.services.domain.NoteService;
 import ru.valaz.billboard.services.repositories.NoteRepository;
@@ -37,11 +39,13 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Note saveOrUpdate(Note domainObject) {
         return noteRepository.save(domainObject);
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
         Note note = noteRepository.findOne(id);
         note.getUser().getNotes().remove(note);

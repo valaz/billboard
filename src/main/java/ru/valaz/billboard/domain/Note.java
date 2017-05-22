@@ -88,4 +88,10 @@ public class Note {
     public void setBillboard(Billboard billboard) {
         this.billboard = billboard;
     }
+
+    @PrePersist
+    public void beforePersist() {
+        setDate(LocalDateTime.now());
+    }
+
 }

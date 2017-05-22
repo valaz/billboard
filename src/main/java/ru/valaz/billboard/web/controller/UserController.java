@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,16 +57,20 @@ public class UserController {
         return "redirect:/user/billboards";
     }
 
-    @RequestMapping("/user/note/new")
-    public String newNote(Model model) {
-        model.addAttribute("billboard", new Billboard());
-        return "billboardform";
+    @RequestMapping("/billboard/{id}/new")
+    public String newNote(Map<String, Object> model, @PathVariable(value = "id") Long id) {
+        Billboard billboard = billboardService.getById(id);
+        model.put("billboard", billboard);
+        model.put("note", new Note());
+        return "user/noteform";
     }
 
-    @RequestMapping(value = "/user/note/add", method = RequestMethod.POST)
-    public String saveNote(Billboard billboard) {
-        Billboard savedBillboard = billboardService.saveOrUpdate(billboard);
-        return "billboard/" + savedBillboard.getId();
+    @RequestMapping(value = "/billboard/{id}/new", method = RequestMethod.POST)
+    public String addNote(Map<String, Object> model, @PathVariable(value = "id") Long id, @ModelAttribute(value = "note") Note note) {
+        Billboard billboard = billboardService.getById(id);
+        model.put("billboard", billboard);
+        billboardService.addNewNoteToBillboard(billboard, note);
+        return "redirect:/billboard/show/" + id;
     }
 
     @RequestMapping(value = "/user/note/delete/{id}", method = RequestMethod.POST)

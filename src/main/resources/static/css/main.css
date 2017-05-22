@@ -33,3 +33,7 @@ body {
     padding: 6px 12px;
     border-radius: 4px
 }
+
+.btn-form {
+    margin-bottom: 10px;
+}
