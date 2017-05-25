@@ -51,8 +51,28 @@ public class BillboardServiceImpl implements BillboardService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public Billboard saveOrUpdate(Billboard domainObject) {
         return billboardRepository.save(domainObject);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Billboard addBillboard(Billboard billboard) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User user = userService.findByUsername(currentPrincipalName);
+        if (user == null) {
+            throw new UsernameNotFoundException("need auth");
+        }
+        billboard.setUser(user);
+        if (billboard.getLogoUrl() == null || billboard.getLogoUrl().isEmpty()) {
+            billboard.setLogoUrl("//placehold.it/450X300/DD3333/EE3333");
+        }
+        Billboard savedBillboard = billboardRepository.save(billboard);
+        user.addBillboard(savedBillboard);
+        userService.saveOrUpdate(user);
+        return savedBillboard;
     }
 
     @Override

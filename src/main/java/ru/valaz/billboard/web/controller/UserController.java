@@ -42,13 +42,14 @@ public class UserController {
     @RequestMapping("/user/billboard/new")
     public String newBillboard(Model model) {
         model.addAttribute("billboard", new Billboard());
-        return "billboardform";
+        return "user/billboardform";
     }
 
     @RequestMapping(value = "/user/billboard/add", method = RequestMethod.POST)
     public String saveBillboard(Billboard billboard) {
-        Billboard savedBillboard = billboardService.saveOrUpdate(billboard);
-        return "billboard/" + savedBillboard.getId();
+        billboard.setId(null);
+        Billboard savedBillboard = billboardService.addBillboard(billboard);
+        return "redirect:/billboard/show/" + savedBillboard.getId();
     }
 
     @RequestMapping(value = "/user/billboard/delete/{id}", method = RequestMethod.POST)

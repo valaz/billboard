@@ -1,7 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+<div th:fragment="header">
+    <div class="col-md-12">
+        <div class="panel panel-default clickable" th:href="${'/billboard/show/' + billboard.id}">
+            <div class="panel-body">
+                <div class="media">
+                    <div class="media-left media-heading">
+                        <img class="media-object" src="..." alt="..." th:src="${billboard.logoUrl}"
+                             style="height: 64px;width: 64px; overflow: hidden; object-fit: cover"/>
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading" th:inline="text">
+                            [[${billboard.name}]]
+                            <span class="badge" th:text="${billboard.notes.size()}">4</span>
+                        </h2>
+                        <h5 th:text="${billboard.description}"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row" th:fragment="grid">
+
+    <div class="row">
+        <form class="form-group col-md-12 col-sm-12 col-xs-12" method="get"
+              th:action="${'/user/billboard/new'}">
+            <button class="btn btn-primary center-block col-md-12 col-xs-12" href="#" th:text="#{ui.billboards.new}"
+                    type="submit">
+                Delete
+            </button>
+        </form>
+    </div>
     <div th:each="billboard : ${billboards}">
         <div class="col-md-4 col-sm-6 col-xs-6">
             <div class="panel panel-default">

@@ -16,9 +16,6 @@
 <div th:replace="fragments/navbar :: header"/>
 
 <div class="container">
-
-    <div th:if="billboards" th:replace="fragments/boards :: header"></div>
-
     <div>
         <div class="page-header">
             <h1 th:text="#{ui.notes.new}">Add note</h1>
@@ -26,8 +23,8 @@
     </div>
 
     <div class="well">
-        <form class="form-horizontal" role="form" th:object="${note}"
-              th:action="${'/billboard/' + billboard.id + '/new'}" method="post">
+        <form class="form-horizontal" role="form" th:object="${billboard}"
+              th:action="${'/user/billboard/add'}" method="post">
             <div class="form-group">
                 <input class="form-control" th:field="*{name}" th:placeholder="#{ui.name}"></input>
             </div>
@@ -35,7 +32,7 @@
                 <textarea class="form-control" th:field="*{description}"
                           th:placeholder="#{ui.description}"></textarea>
             </div>
-            <button class="btn btn-success pull-right" type="submit">Post</button>
+            <button class="btn btn-warning pull-right" type="submit">Post</button>
             <ul class="list-inline">
                 <li><a href="#"><i class="glyphicon glyphicon-align-left"></i></a></li>
                 <li><a href="#"><i class="glyphicon glyphicon-align-center"></i></a></li>
