@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import ru.valaz.billboard.domain.Billboard;
 import ru.valaz.billboard.domain.Note;
+import ru.valaz.billboard.domain.User;
 import ru.valaz.billboard.domain.dto.UserDto;
 import ru.valaz.billboard.services.domain.BillboardService;
 import ru.valaz.billboard.services.domain.NoteService;
@@ -18,6 +19,7 @@ import ru.valaz.billboard.services.domain.UserService;
 
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -46,7 +48,14 @@ public class MainController {
     @RequestMapping("/billboard/show/{id}")
     public String getBillboard(Map<String, Object> model, @PathVariable(value = "id") Long id) {
         Billboard billboard = billboardService.getById(id);
+        if (billboard == null) {
+            return "error/404";
+        }
         model.put("billboard", billboard);
+        model.put("billboard_subscribers", billboard.getSubscribers()
+                .stream()
+                .map(User::getUsername)
+                .collect(Collectors.toSet()));
         model.put("notes", billboard.getNotes());
         return "billboard";
     }

@@ -11,6 +11,7 @@ import ru.valaz.billboard.domain.User;
 import ru.valaz.billboard.domain.dto.UserDto;
 import ru.valaz.billboard.services.domain.RoleService;
 import ru.valaz.billboard.services.domain.UserService;
+import ru.valaz.billboard.services.repositories.BillboardRepository;
 import ru.valaz.billboard.services.repositories.UserRepository;
 import ru.valaz.billboard.services.security.EncryptionService;
 
@@ -20,7 +21,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-//@Profile("springdatajpa")
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
@@ -31,12 +31,15 @@ public class UserServiceImpl implements UserService {
 
     private ModelMapper modelMapper;
 
+    private BillboardRepository billboardRepository;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EncryptionService encryptionService, RoleService roleService, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, EncryptionService encryptionService, RoleService roleService, ModelMapper modelMapper, BillboardRepository billboardRepository) {
         this.userRepository = userRepository;
         this.encryptionService = encryptionService;
         this.roleService = roleService;
         this.modelMapper = modelMapper;
+        this.billboardRepository = billboardRepository;
     }
 
     @Override
@@ -101,6 +104,12 @@ public class UserServiceImpl implements UserService {
         user.addRole(role);
         saveOrUpdate(user);
         return user;
+    }
+
+    @Override
+    public Set<Billboard> getSubscribeBillboardsByUsername(String username) {
+        User user = findByUsername(username);
+        return billboardRepository.findAllBySubscribersContaining(user);
     }
 
     private boolean emailExist(String email) {

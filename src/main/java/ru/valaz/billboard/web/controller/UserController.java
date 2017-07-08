@@ -1,6 +1,5 @@
 package ru.valaz.billboard.web.controller;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +23,8 @@ import java.util.Set;
 @Controller
 public class UserController {
 
+    private static final String BILLBOARD = "billboard";
+
     @Autowired
     private UserService userService;
 
@@ -32,9 +33,6 @@ public class UserController {
 
     @Autowired
     private NoteService noteService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @RequestMapping("/user/billboards")
     public String getUserBillboards(Map<String, Object> model) {
@@ -45,9 +43,18 @@ public class UserController {
         return "user/billboards";
     }
 
+    @RequestMapping("/user/subscribe/billboards")
+    public String getUserSubscribeBillboards(Map<String, Object> model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Set<Billboard> billboards = userService.getSubscribeBillboardsByUsername(username);
+        model.put("billboards", billboards);
+        return "user/billboards";
+    }
+
     @RequestMapping("/user/billboard/new")
     public String newBillboard(Model model) {
-        model.addAttribute("billboard", new BillboardDto());
+        model.addAttribute(BILLBOARD, new BillboardDto());
         return "user/billboardform";
     }
 
@@ -55,7 +62,7 @@ public class UserController {
     public String saveBillboard(BillboardDto billboard) {
         billboard.setId(null);
         Billboard savedBillboard = billboardService.addBillboard(billboard);
-        return "redirect:/billboard/show/" + savedBillboard.getId();
+        return getBillboardViewPage(savedBillboard.getId());
     }
 
     @RequestMapping(value = "/user/billboard/delete/{id}", method = RequestMethod.POST)
@@ -64,10 +71,26 @@ public class UserController {
         return "redirect:/user/billboards";
     }
 
+    @RequestMapping(value = "/user/billboard/unsubscribe/{id}", method = RequestMethod.POST)
+    public String unsubscribeBillboard(@PathVariable Long id) {
+        billboardService.removeSubscriber(id);
+        return getBillboardViewPage(id);
+    }
+
+    @RequestMapping(value = "/user/billboard/subscribe/{id}", method = RequestMethod.POST)
+    public String subscribeBillboard(@PathVariable Long id) {
+        billboardService.addSubscriber(id);
+        return getBillboardViewPage(id);
+    }
+
+    private String getBillboardViewPage(@PathVariable Long id) {
+        return "redirect:/billboard/show/" + billboardService.getById(id).getId();
+    }
+
     @RequestMapping("/billboard/{id}/new")
     public String newNote(Map<String, Object> model, @PathVariable(value = "id") Long id) {
         Billboard billboard = billboardService.getById(id);
-        model.put("billboard", billboard);
+        model.put(BILLBOARD, billboard);
         model.put("note", new NoteDto());
         return "user/noteform";
     }
@@ -75,7 +98,7 @@ public class UserController {
     @RequestMapping(value = "/billboard/{id}/new", method = RequestMethod.POST)
     public String addNote(Map<String, Object> model, @PathVariable(value = "id") Long id, @ModelAttribute(value = "note") NoteDto note) {
         Billboard billboard = billboardService.getById(id);
-        model.put("billboard", billboard);
+        model.put(BILLBOARD, billboard);
         billboardService.addNewNoteToBillboard(billboard, note);
         return "redirect:/billboard/show/" + id;
     }

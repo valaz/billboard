@@ -1,5 +1,6 @@
 package ru.valaz.billboard.services.domain.impl;
 
+import com.google.common.base.Preconditions;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import ru.valaz.billboard.services.repositories.BillboardRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class BillboardServiceImpl implements BillboardService {
@@ -65,9 +67,7 @@ public class BillboardServiceImpl implements BillboardService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public Billboard addBillboard(Billboard billboard) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        User user = userService.findByUsername(currentPrincipalName);
+        User user = getCurrentUser();
         if (user == null) {
             throw new UsernameNotFoundException("need auth");
         }
@@ -98,9 +98,7 @@ public class BillboardServiceImpl implements BillboardService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void addNewNoteToBillboard(Billboard billboard, Note note) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        User user = userService.findByUsername(currentPrincipalName);
+        User user = getCurrentUser();
         if (user == null) {
             throw new UsernameNotFoundException("need auth");
         }
@@ -117,8 +115,37 @@ public class BillboardServiceImpl implements BillboardService {
         userService.saveOrUpdate(user);
     }
 
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userService.findByUsername(currentPrincipalName);
+    }
+
     @Override
     public void addNewNoteToBillboard(Billboard billboard, NoteDto note) {
         addNewNoteToBillboard(billboard, modelMapper.map(note, Note.class));
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addSubscriber(Long id) {
+        User user = getCurrentUser();
+        Preconditions.checkNotNull(user);
+        Billboard billboard = getById(id);
+        billboard.addSubscriber(user);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void removeSubscriber(Long id) {
+        User user = getCurrentUser();
+        Preconditions.checkNotNull(user);
+        Billboard billboard = getById(id);
+        billboard.removeSubscriber(user);
+    }
+
+    @Override
+    public Set<Billboard> getBillboardsByUser(User user) {
+        return billboardRepository.findAllBySubscribersContaining(user);
     }
 }

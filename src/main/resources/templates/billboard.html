@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -28,6 +28,25 @@
         <form class="form-group col-md-12 col-sm-12 col-xs-12" method="get"
               th:action="${'/billboard/' + billboard.id + '/new'}">
             <button class="btn btn-primary center-block col-md-12 col-xs-12" href="#" th:text="#{ui.notes.new}"
+                    type="submit">
+                New Note
+            </button>
+        </form>
+        <form class="form-group col-md-12 col-sm-12 col-xs-12" method="post"
+              th:action="${'/user/billboard/subscribe/' + billboard.id}"
+              th:if="${!billboard_subscribers.contains(#authentication.name)}">
+            <button class="btn btn-warning center-block col-md-12 col-xs-12" href="#"
+                    th:text="#{ui.billboard.subscribe}"
+                    type="submit">
+                Delete
+            </button>
+        </form>
+        <form class="form-group col-md-12 col-sm-12 col-xs-12" method="post"
+              th:action="${'/user/billboard/unsubscribe/' + billboard.id}"
+              sec:authorize="${isAuthenticated()}"
+              th:if="${billboard_subscribers.contains(#authentication.name)}">
+            <button class="btn btn-warning center-block col-md-12 col-xs-12" href="#"
+                    th:text="#{ui.billboard.unsubscribe}"
                     type="submit">
                 Delete
             </button>

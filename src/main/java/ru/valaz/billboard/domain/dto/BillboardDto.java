@@ -16,6 +16,8 @@ public class BillboardDto {
 
     private String logoUrl;
 
+    private Set<UserDto> subscribers;
+
     public Long getId() {
         return id;
     }
@@ -62,5 +64,13 @@ public class BillboardDto {
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
+    }
+
+    public Set<UserDto> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<UserDto> subscribers) {
+        this.subscribers = subscribers;
     }
 }

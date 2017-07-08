@@ -25,6 +25,7 @@ public class User extends AbstractDomainClass {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
     private List<Role> roles = new ArrayList<>();
+
     private Integer failedLoginAttempts = 0;
 
     public String getUsername() {

@@ -20,4 +20,6 @@ public interface UserService extends CRUDService<User> {
     User createUserAccount(UserDto accountDto, BindingResult result);
 
     User registerNewUserAccount(UserDto accountDto);
+
+    Set<Billboard> getSubscribeBillboardsByUsername(String username);
 }

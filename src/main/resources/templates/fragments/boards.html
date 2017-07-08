@@ -44,16 +44,14 @@
                     <p class="lead" th:text="${billboard.name}">Hacker News</p>
                     <p th:text="${billboard.description}">description</p>
                     <p>
-                        Followers <span class="label label-primary" th:text="${billboard.notes.size()*2}"></span>
+                        Followers <span class="label label-primary" th:text="${billboard.subscribers.size()}"></span>
                         , Notes <span class="label label-info" th:text="${billboard.notes.size()}"></span>
                     </p>
                     <p>
-                        <img src="http://api.randomuser.me/portraits/med/men/20.jpg" width="28px"
+                        <img th:each="subscriber : ${billboard.subscribers}"
+                             src="http://api.randomuser.me/portraits/med/men/20.jpg" width="28px"
                              height="28px"/>
-                        <img src="http://api.randomuser.me/portraits/med/men/21.jpg" width="28px"
-                             height="28px"/>
-                        <img src="http://api.randomuser.me/portraits/med/men/14.jpg" width="28px"
-                             height="28px"/>
+                        <br/>
                     </p>
                     <div class="row">
                         <form class="btn-form col-md-6 col-sm-12 col-xs-12" method="get"

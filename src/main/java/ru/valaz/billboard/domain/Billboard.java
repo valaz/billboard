@@ -16,8 +16,8 @@ public class Billboard {
     private Long id;
 
     private String name;
-    private String description;
 
+    private String description;
 
     @OneToMany(mappedBy = "billboard", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -25,6 +25,30 @@ public class Billboard {
 
     @ManyToOne
     private User user;
+
+    private String logoUrl;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable
+    private Set<User> subscribers;
+
+    public Billboard() {
+        // for Hibernate
+    }
+
+    public Billboard(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.notes = new HashSet<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;
@@ -34,37 +58,12 @@ public class Billboard {
         this.user = user;
     }
 
-    public Billboard() {
-        // for Hibernate
-    }
-
     public String getLogoUrl() {
         return logoUrl;
     }
 
     public void setLogoUrl(String logoUrl) {
         this.logoUrl = logoUrl;
-    }
-
-    private String logoUrl;
-
-    public Billboard(String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.notes = new HashSet<>();
-    }
-
-    public boolean addNote(Note note) {
-        notes.add(note);
-        return true;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -89,5 +88,28 @@ public class Billboard {
 
     public void setNotes(Set<Note> notes) {
         this.notes = notes;
+    }
+
+    public Set<User> getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(Set<User> subscribers) {
+        this.subscribers = subscribers;
+    }
+
+    public boolean addNote(Note note) {
+        notes.add(note);
+        return true;
+    }
+
+    public boolean addSubscriber(User user) {
+        subscribers.add(user);
+        return true;
+    }
+
+    public boolean removeSubscriber(User user) {
+        subscribers.remove(user);
+        return true;
     }
 }
