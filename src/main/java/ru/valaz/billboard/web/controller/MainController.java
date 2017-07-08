@@ -13,9 +13,8 @@ import ru.valaz.billboard.domain.Billboard;
 import ru.valaz.billboard.domain.Note;
 import ru.valaz.billboard.domain.dto.UserDto;
 import ru.valaz.billboard.services.domain.BillboardService;
+import ru.valaz.billboard.services.domain.NoteService;
 import ru.valaz.billboard.services.domain.UserService;
-import ru.valaz.billboard.services.repositories.BillboardRepository;
-import ru.valaz.billboard.services.repositories.NoteRepository;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -27,13 +26,10 @@ public class MainController {
     private UserService userService;
 
     @Autowired
-    private BillboardRepository billboardRepository;
-
-    @Autowired
     private BillboardService billboardService;
 
     @Autowired
-    private NoteRepository noteRepository;
+    private NoteService noteService;
 
     @RequestMapping("/")
     public String index(Map<String, Object> model) {
@@ -49,7 +45,7 @@ public class MainController {
 
     @RequestMapping("/billboard/show/{id}")
     public String getBillboard(Map<String, Object> model, @PathVariable(value = "id") Long id) {
-        Billboard billboard = billboardRepository.findOne(id);
+        Billboard billboard = billboardService.getById(id);
         model.put("billboard", billboard);
         model.put("notes", billboard.getNotes());
         return "billboard";
@@ -57,7 +53,7 @@ public class MainController {
 
     @RequestMapping("/note/show/{id}")
     public String getNote(Map<String, Object> model, @PathVariable(value = "id") Long id) {
-        Note note = noteRepository.findOne(id);
+        Note note = noteService.getById(id);
         model.put("note", note);
         return "note";
     }

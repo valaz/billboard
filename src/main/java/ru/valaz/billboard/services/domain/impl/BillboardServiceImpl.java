@@ -1,5 +1,6 @@
 package ru.valaz.billboard.services.domain.impl;
 
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.valaz.billboard.domain.Billboard;
 import ru.valaz.billboard.domain.Note;
 import ru.valaz.billboard.domain.User;
+import ru.valaz.billboard.domain.dto.BillboardDto;
+import ru.valaz.billboard.domain.dto.NoteDto;
 import ru.valaz.billboard.services.domain.BillboardService;
 import ru.valaz.billboard.services.domain.NoteService;
 import ru.valaz.billboard.services.domain.UserService;
@@ -23,7 +26,7 @@ import java.util.List;
 @Service
 public class BillboardServiceImpl implements BillboardService {
 
-    private Logger LOGGER = LoggerFactory.getLogger(BillboardServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(BillboardServiceImpl.class);
 
     private BillboardRepository billboardRepository;
 
@@ -31,11 +34,14 @@ public class BillboardServiceImpl implements BillboardService {
 
     private UserService userService;
 
+    private ModelMapper modelMapper;
+
     @Autowired
-    public BillboardServiceImpl(BillboardRepository billboardRepository, NoteService noteService, UserService userService) {
+    public BillboardServiceImpl(BillboardRepository billboardRepository, NoteService noteService, UserService userService, ModelMapper modelMapper) {
         this.billboardRepository = billboardRepository;
         this.noteService = noteService;
         this.userService = userService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -76,12 +82,17 @@ public class BillboardServiceImpl implements BillboardService {
     }
 
     @Override
+    public Billboard addBillboard(BillboardDto billboard) {
+        return addBillboard(modelMapper.map(billboard, Billboard.class));
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void delete(Long id) {
         Billboard billboard = billboardRepository.findOne(id);
         billboard.getUser().getBillboards().remove(billboard);
         billboardRepository.delete(id);
-        LOGGER.info("Billboard {} deleted by {}", id, billboard.getUser().getUsername());
+        logger.info("Billboard {} deleted by {}", id, billboard.getUser().getUsername());
     }
 
     @Override
@@ -99,11 +110,15 @@ public class BillboardServiceImpl implements BillboardService {
             note.setImageUrl("http://lorempixel.com/500/500/?random=333");
         }
         note.setBillboard(billboard);
-//        noteService.saveOrUpdate(note);
         Note savedNote = noteService.saveOrUpdate(note);
         billboard.addNote(savedNote);
         user.addNote(savedNote);
         saveOrUpdate(billboard);
         userService.saveOrUpdate(user);
+    }
+
+    @Override
+    public void addNewNoteToBillboard(Billboard billboard, NoteDto note) {
+        addNewNoteToBillboard(billboard, modelMapper.map(note, Note.class));
     }
 }

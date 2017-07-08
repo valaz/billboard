@@ -1,5 +1,6 @@
 package ru.valaz.billboard.services.domain.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -28,11 +29,14 @@ public class UserServiceImpl implements UserService {
 
     private RoleService roleService;
 
+    private ModelMapper modelMapper;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, EncryptionService encryptionService, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, EncryptionService encryptionService, RoleService roleService, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.encryptionService = encryptionService;
         this.roleService = roleService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -92,11 +96,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User registerNewUserAccount(UserDto accountDto) {
-        User user = new User();
-        user.setName(accountDto.getName());
-        user.setUsername(accountDto.getUsername());
-        user.setEmail(accountDto.getEmail());
-        user.setPassword(accountDto.getPassword());
+        User user = modelMapper.map(accountDto, User.class);
         Role role = roleService.getRole("USER");
         user.addRole(role);
         saveOrUpdate(user);

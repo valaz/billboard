@@ -19,11 +19,10 @@ import java.time.LocalDateTime;
 @Component
 public class BillboardLoader implements ApplicationListener<ContextRefreshedEvent>, Ordered {
 
+    private Logger log = LoggerFactory.getLogger(BillboardLoader.class);
     private BillboardRepository billboardRepository;
     private NoteRepository noteRepository;
     private UserService userService;
-
-    private Logger log = LoggerFactory.getLogger(BillboardLoader.class);
 
     @Autowired
     public BillboardLoader(BillboardRepository billboardRepository, NoteRepository noteRepository, UserService userService) {

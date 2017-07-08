@@ -44,11 +44,15 @@ public class SpringJpaBootstrap implements ApplicationListener<ContextRefreshedE
     private void loadUsers() {
         User user1 = new User();
         user1.setUsername("user");
+        user1.setName("userr");
+        user1.setEmail("user@us.ru");
         user1.setPassword("user");
         userService.saveOrUpdate(user1);
 
         User user2 = new User();
         user2.setUsername("admin");
+        user1.setName("adminn");
+        user1.setEmail("admin@admin.ru");
         user2.setPassword("admin");
         userService.saveOrUpdate(user2);
 
