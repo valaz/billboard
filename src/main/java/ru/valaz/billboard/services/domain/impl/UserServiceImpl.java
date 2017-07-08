@@ -2,9 +2,13 @@ package ru.valaz.billboard.services.domain.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 import ru.valaz.billboard.domain.Billboard;
 import ru.valaz.billboard.domain.Note;
+import ru.valaz.billboard.domain.Role;
 import ru.valaz.billboard.domain.User;
+import ru.valaz.billboard.domain.dto.UserDto;
+import ru.valaz.billboard.services.domain.RoleService;
 import ru.valaz.billboard.services.domain.UserService;
 import ru.valaz.billboard.services.repositories.UserRepository;
 import ru.valaz.billboard.services.security.EncryptionService;
@@ -20,18 +24,16 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     private EncryptionService encryptionService;
 
-    @Autowired
-    public void setEncryptionService(EncryptionService encryptionService) {
-        this.encryptionService = encryptionService;
-    }
+    private RoleService roleService;
 
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository, EncryptionService encryptionService, RoleService roleService) {
+        this.userRepository = userRepository;
+        this.encryptionService = encryptionService;
+        this.roleService = roleService;
+    }
 
     @Override
     public List<User> listAll() {
@@ -74,5 +76,40 @@ public class UserServiceImpl implements UserService {
     public Set<Note> getNotesByUsername(String username) {
         User user = findByUsername(username);
         return user.getNotes();
+    }
+
+    @Override
+    public User createUserAccount(UserDto accountDto, BindingResult result) {
+        User registered = null;
+        try {
+            registered = registerNewUserAccount(accountDto);
+        } catch (Exception e) {
+            return null;
+        }
+        return registered;
+    }
+
+    @Transactional
+    @Override
+    public User registerNewUserAccount(UserDto accountDto) {
+        User user = new User();
+        user.setName(accountDto.getName());
+        user.setUsername(accountDto.getUsername());
+        user.setEmail(accountDto.getEmail());
+        user.setPassword(accountDto.getPassword());
+        Role role = roleService.getRole("USER");
+        user.addRole(role);
+        saveOrUpdate(user);
+        return user;
+    }
+
+    private boolean emailExist(String email) {
+        User user = userRepository.findByEmail(email);
+        return user != null;
+    }
+
+    private boolean usernameExist(String username) {
+        User user = userRepository.findByUsername(username);
+        return user != null;
     }
 }

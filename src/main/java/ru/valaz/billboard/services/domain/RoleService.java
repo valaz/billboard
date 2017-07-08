@@ -5,5 +5,5 @@ import ru.valaz.billboard.services.CRUDService;
 
 public interface RoleService extends CRUDService<Role> {
 
-
+    Role getRole(String code);
 }

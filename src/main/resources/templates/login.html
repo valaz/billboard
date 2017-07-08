@@ -36,7 +36,14 @@
                         <input type="checkbox" value="remember-me"> Запомнить</input>
                     </label>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{label.form.loginLink}">Sign
+                    in
+                </button>
+            </form>
+            <form class="form-signin" action="/registration">
+                <button class="btn btn-lg btn-warning btn-block" type="submit" th:text="#{label.form.registerLink}">
+                    Register
+                </button>
             </form>
         </div>
     </div>

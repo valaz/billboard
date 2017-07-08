@@ -4,4 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import ru.valaz.billboard.domain.Role;
 
 public interface RoleRepository extends CrudRepository<Role, Long> {
+
+    Role findRoleByRole(String role);
 }

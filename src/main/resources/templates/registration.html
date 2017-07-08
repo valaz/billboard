@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Register</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/signin.css}"/>
+</head>
+<body>
+<div th:replace="fragments/navbar :: header"/>
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8 col-md-offset-2">
+            <form role="form" action="/registration" th:object="${user}" method="POST" enctype="utf8">
+                <fieldset>
+
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.name}">first</label>
+                        <input type="text" class="form-control" th:field="*{name}"/>
+                        <p th:each="error: ${#fields.errors('name')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.username}">first</label>
+                        <input type="text" class="form-control" th:field="*{username}"/>
+                        <p th:each="error: ${#fields.errors('username')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.email}">email</label>
+                        <input type="email" class="form-control" th:field="*{email}"/>
+                        <p th:each="error : ${#fields.errors('email')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.password}">password</label>
+                        <input type="password" class="form-control" th:field="*{password}"/>
+                        <p th:each="error : ${#fields.errors('password')}"
+                           th:text="${error}">Validation error</p>
+                    </div>
+                </fieldset>
+
+                <!--<fieldset>-->
+                <!--<legend>Optional Details</legend>-->
+
+                <!--<div class="form-group col-md-6">-->
+                <!--<label for="country">Country of Residence</label>-->
+                <!--<select class="form-control" name="" id="country">-->
+                <!--<option>Country 1</option>-->
+                <!--<option>Country 2</option>-->
+                <!--<option>Country 3</option>-->
+                <!--</select>-->
+                <!--</div>-->
+
+                <!--<div class="form-group col-md-12">-->
+                <!--<label for="found_site">How did you find out about the site?</label>-->
+                <!--<select class="form-control" name="" id="found_site">-->
+                <!--<option>Company</option>-->
+                <!--<option>Friend</option>-->
+                <!--<option>Colleague</option>-->
+                <!--<option>Advertisement</option>-->
+                <!--<option>Google Search</option>-->
+                <!--<option>Online Article</option>-->
+                <!--<option value="other" >Other</option>-->
+                <!--</select>-->
+                <!--</div>-->
+
+                <!--<div class="form-group col-md-12 hidden">-->
+                <!--<label for="specify">Please Specify</label>-->
+                <!--<textarea class="form-control" id="specify" name=""></textarea>-->
+                <!--</div>-->
+
+                <!--</fieldset>-->
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="" id=""/>
+                                I accept the <a href="#">terms and conditions</a>.
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">
+                            Register
+                        </button>
+                        <a th:href="@{/login}">Already have an account?</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

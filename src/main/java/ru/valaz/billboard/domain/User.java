@@ -10,7 +10,9 @@ import java.util.Set;
 @Entity
 public class User extends AbstractDomainClass {
 
+    private String name;
     private String username;
+    private String email;
 
     @Transient
     private String password;
@@ -20,8 +22,6 @@ public class User extends AbstractDomainClass {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable
-    // ~ defaults to @JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "user_id"),
-    //     inverseJoinColumns = @joinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
     private Integer failedLoginAttempts = 0;
 
@@ -58,6 +58,22 @@ public class User extends AbstractDomainClass {
     }
 
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public List<Role> getRoles() {
         return roles;
     }
@@ -70,15 +86,10 @@ public class User extends AbstractDomainClass {
         if (!this.roles.contains(role)) {
             this.roles.add(role);
         }
-
-        if (!role.getUsers().contains(this)) {
-            role.getUsers().add(this);
-        }
     }
 
     public void removeRole(Role role) {
         this.roles.remove(role);
-        role.getUsers().remove(this);
     }
 
     public Integer getFailedLoginAttempts() {
