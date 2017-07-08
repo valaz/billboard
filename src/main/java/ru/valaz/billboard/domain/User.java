@@ -11,7 +11,9 @@ import java.util.Set;
 public class User extends AbstractDomainClass {
 
     private String name;
+
     private String username;
+
     private String email;
 
     @Transient
