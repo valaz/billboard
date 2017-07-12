@@ -1,6 +1,7 @@
 package ru.valaz.billboard.services.domain.impl;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import ru.valaz.billboard.services.domain.UserService;
 import ru.valaz.billboard.services.repositories.BillboardRepository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -147,5 +149,16 @@ public class BillboardServiceImpl implements BillboardService {
     @Override
     public Set<Billboard> getBillboardsByUser(User user) {
         return billboardRepository.findAllBySubscribersContaining(user);
+    }
+
+    @Override
+    public Iterable<Billboard> getTopBillboards(int count) {
+        Preconditions.checkArgument(count > 0);
+
+        Iterable<Billboard> billboards = billboardRepository.findAll();
+        ArrayList<Billboard> sortedBillboards = Lists.newArrayList(billboards);
+        sortedBillboards.sort(Comparator.comparingInt(o -> -o.getSubscribers().size()));
+
+        return sortedBillboards.subList(0, count);
     }
 }

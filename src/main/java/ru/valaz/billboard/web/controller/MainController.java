@@ -40,7 +40,7 @@ public class MainController {
 
     @RequestMapping("/billboards")
     public String billboards(Map<String, Object> model) {
-        Iterable<Billboard> billboards = billboardService.listAll();
+        Iterable<Billboard> billboards = billboardService.getTopBillboards(3);
         model.put("billboards", billboards);
         return "billboards";
     }

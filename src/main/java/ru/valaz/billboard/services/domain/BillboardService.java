@@ -24,4 +24,6 @@ public interface BillboardService extends CRUDService<Billboard> {
     void removeSubscriber(Long id);
 
     Set<Billboard> getBillboardsByUser(User user);
+
+    Iterable<Billboard> getTopBillboards(int count);
 }
