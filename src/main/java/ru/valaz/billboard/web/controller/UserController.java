@@ -1,5 +1,6 @@
 package ru.valaz.billboard.web.controller;
 
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import ru.valaz.billboard.domain.Billboard;
 import ru.valaz.billboard.domain.Note;
+import ru.valaz.billboard.domain.User;
 import ru.valaz.billboard.domain.dto.BillboardDto;
 import ru.valaz.billboard.domain.dto.NoteDto;
+import ru.valaz.billboard.domain.dto.UserDto;
 import ru.valaz.billboard.services.domain.BillboardService;
 import ru.valaz.billboard.services.domain.NoteService;
 import ru.valaz.billboard.services.domain.UserService;
@@ -33,6 +36,23 @@ public class UserController {
 
     @Autowired
     private NoteService noteService;
+
+    @RequestMapping("/user/{username}")
+    public String viewUserProfile(Map<String, Object> model, @PathVariable String username) {
+        User user = userService.findByUsername(username);
+        model.put("user", user);
+        return "user/profile";
+    }
+
+    @RequestMapping(value = "/user/{username}/update", method = RequestMethod.POST)
+    public String updateUser(Map<String, Object> model, @PathVariable String username,
+                             @ModelAttribute("user") UserDto accountDto) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String authName = auth.getName();
+        Preconditions.checkArgument(authName.equals(username));
+        userService.saveOrUpdate(authName, accountDto);
+        return "redirect:/user/" + authName;
+    }
 
     @RequestMapping("/user/billboards")
     public String getUserBillboards(Map<String, Object> model) {

@@ -22,4 +22,6 @@ public interface UserService extends CRUDService<User> {
     User registerNewUserAccount(UserDto accountDto);
 
     Set<Billboard> getSubscribeBillboardsByUsername(String username);
+
+    void saveOrUpdate(String authName, UserDto accountDto);
 }

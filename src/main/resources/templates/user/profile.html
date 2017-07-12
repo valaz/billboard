@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title th:text="#{ui.user.profile}">Profile</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+</head>
+<body>
+<div th:replace="fragments/navbar :: header"/>
+
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8 col-md-offset-2">
+            <form role="form" th:action="${'/user/'+user.username+'/update'}" th:object="${user}" method="POST"
+                  enctype="utf8">
+                <fieldset>
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.name}">first</label>
+                        <input type="text" class="form-control" th:field="*{name}"/>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.email}">email</label>
+                        <input type="email" class="form-control" th:field="*{email}"/>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label th:text="#{label.user.password.new}">password</label>
+                        <input type="password" class="form-control" th:field="*{password}"/>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">
+                            Save
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+<!-- /.container -->
+<script type="text/javascript"
+        src="/webjars/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript"
+        src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/main.js}"/>
+</body>
+</html>

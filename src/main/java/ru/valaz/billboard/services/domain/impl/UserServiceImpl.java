@@ -1,5 +1,6 @@
 package ru.valaz.billboard.services.domain.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,18 @@ public class UserServiceImpl implements UserService {
             domainObject.setEncryptedPassword(encryptionService.encryptString(domainObject.getPassword()));
         }
         return userRepository.save(domainObject);
+    }
+
+    @Transactional
+    @Override
+    public void saveOrUpdate(String authName, UserDto accountDto) {
+        User user = userRepository.findByUsername(authName);
+        user.setEmail(accountDto.getEmail());
+        user.setName(accountDto.getName());
+        if (StringUtils.isNotBlank(accountDto.getPassword())) {
+            user.setPassword(accountDto.getPassword());
+        }
+        saveOrUpdate(user);
     }
 
     @Override
